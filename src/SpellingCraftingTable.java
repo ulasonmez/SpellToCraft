@@ -1,12 +1,17 @@
+import java.util.ArrayList;
+
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -29,6 +34,24 @@ public class SpellingCraftingTable implements Listener{
 					plugin.placeBlockArmorStand(loc, item.spellingCraftingTable());
 				}
 			}
+		}
+	}
+	ArrayList<Projectile> goldenCoin = new ArrayList<>();
+	@EventHandler
+	public void onShoot(ProjectileLaunchEvent event) {
+		if(event.getEntity().getShooter() instanceof Player) {
+			Player p = (Player)event.getEntity().getShooter();
+			if(plugin.holdsItem(p, item.goldenCoin())) {
+				goldenCoin.add(event.getEntity());
+			}
+		}
+	}
+	@EventHandler
+	public void onHit(ProjectileHitEvent event) {
+		if(goldenCoin.contains(event.getEntity())) {
+			event.setCancelled(true);
+			event.getEntity().remove();
+			event.getEntity().getWorld().strikeLightning(event.getEntity().getLocation());
 		}
 	}
 	@EventHandler

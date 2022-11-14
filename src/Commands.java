@@ -35,6 +35,14 @@ public class Commands implements CommandExecutor{
 					}
 				}
 			}
+			else if(label.equals("giveletters")) {
+				if(args.length == 1) {
+					for(String s : args[0].split("")) {
+						ItemStack it = plugin.getLetterByString(s);
+						plugin.addItem(p, it);
+					}
+				}
+			}
 		}
 		return false;
 	}

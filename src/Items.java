@@ -2,6 +2,8 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -14,6 +16,14 @@ public class Items {
 	public ItemStack spellingCraftingTable() {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("Spelling Crafting Table");
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack spellingBeeDragon(int cmd) {
+		ItemStack item = new ItemStack(Material.PAPER);
+		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(cmd);
 		meta.setDisplayName("Spelling Crafting Table");
 		item.setItemMeta(meta);
 		return item;
@@ -48,6 +58,68 @@ public class Items {
 		item.setItemMeta(meta);
 		return item;
 	}
+	public ItemStack zombifiedWardenSerum() {
+		ItemStack item = new ItemStack(Material.APPLE);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("Zombified Warden Serum");
+		List<String> lore = List.of(ChatColor.YELLOW+"The Serum of a Zombified Warden can",
+				ChatColor.YELLOW+"grant powers strong enough to rip",
+				ChatColor.YELLOW+"apart words!");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack waxedOxidizedCutCopperSlab() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("WAXED OXIDIZED CUT COPPER SLAB");
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack waxedOxidizedCutCopperSlabItem() {
+		ItemStack item = new ItemStack(Material.WAXED_OXIDIZED_CUT_COPPER_SLAB);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("Waxed Oxidized Cut Copper Slab");
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack waxed() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("WAXED");
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack oxidized() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("OXIDIZED");
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack cut() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("CUT");
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack copper() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("COPPER");
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack slab() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("SLAB");
+		item.setItemMeta(meta);
+		return item;
+	}
 	public ItemStack bedrockArmor() {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
@@ -77,7 +149,7 @@ public class Items {
 		item.setItemMeta(meta);
 		return item;
 	}
-	
+
 
 	public ItemStack golden() {
 		ItemStack item = new ItemStack(coal);
@@ -99,6 +171,39 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("GOLDEN VILLAGE");
+		meta.setCustomModelData(1);
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack goldenCoin() {
+		ItemStack item = new ItemStack(Material.EGG);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("Golden Coin");
+		meta.setCustomModelData(1);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	public ItemStack zombified() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("ZOMBIFIED");
+		meta.setCustomModelData(1);
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack warden() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("WARDEN");
+		meta.setCustomModelData(1);
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack zombifiedWarden() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("ZOMBIFIED WARDEN");
 		meta.setCustomModelData(1);
 		item.setItemMeta(meta);
 		return item;

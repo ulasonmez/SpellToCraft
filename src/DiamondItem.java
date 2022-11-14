@@ -1,16 +1,20 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -31,6 +35,22 @@ public class DiamondItem implements Listener{
 					if(p.getFoodLevel()>=20) {
 						p.setFoodLevel(19);
 					}
+				}
+			}
+		}
+	}
+	Random rand = new Random();
+	@EventHandler
+	public void onDamage(EntityDamageByEntityEvent event) {
+		if(event.getDamager() instanceof Player) {
+			Player p = (Player)event.getDamager();
+			if(diamondPlayers.contains(p)) {
+				event.setDamage(event.getDamage() * 5);
+				event.getEntity().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, event.getEntity().getLocation(),3);
+				event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
+				for(int i = 0; i<=5;i++) {
+					event.getEntity().getWorld().dropItem(plugin.addToLoc(event.getEntity().getLocation(), rand.nextInt(4)-2, 2, rand.nextInt(4)-2)
+							, new ItemStack(Material.DIAMOND));
 				}
 			}
 		}

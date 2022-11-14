@@ -16,6 +16,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.bukkit.entity.Warden;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -90,8 +91,8 @@ public class SpellingBee implements Listener{
 						Location loc2 = plugin.addToLoc(loc, 0, 0, 0);
 							
 						for(int i = 0; i<=20;i++) {
-							Villager v = (Villager)loc2.getWorld().spawnEntity(loc2, EntityType.VILLAGER);
-							
+							Villager v = (Villager)loc2.getWorld().spawnEntity(plugin.addToLoc(loc, rand.nextInt(40)-20, 20, rand.nextInt(40)-20), EntityType.VILLAGER);
+							v.setCustomName(plugin.goldenVillagerName);
 						}
 						
 						Villager v = (Villager)loc2.getWorld().spawnEntity(loc2, EntityType.VILLAGER);
@@ -120,9 +121,50 @@ public class SpellingBee implements Listener{
 						plugin.sendDelayedMessages(plugin.goldenVillageMessage, 60);
 					}
 				}
+				else if(plugin.amount == 4) {
+					if(plugin.holdsItem(p, item.zombifiedWarden())) {
+						plugin.decreaseItem(p);
+						spawnFireworks(bee.getLocation());
+						Bukkit.broadcastMessage(plugin.wardenSpellMessage);
+						
+						Warden warden = (Warden)bee.getWorld().spawnEntity(bee.getLocation(), EntityType.WARDEN);
+						warden.setCustomName(plugin.zombifiedWardenName);
+						
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								if(warden.isDead()) {
+									this.cancel();
+								}
+								warden.setTarget(p);
+							}
+						}.runTaskTimer(plugin, 0, 5);
+						
+						plugin.amount++;
+					}
+					else {
+						plugin.sendDelayedMessages(plugin.nextWord, 0);
+						plugin.sendDelayedMessages(plugin.zombifiedWardenMessage, 60);
+					}
+				}
+
+				else if(plugin.amount == 5) {
+					if(plugin.holdsItem(p, item.waxedOxidizedCutCopperSlab())) {
+						plugin.decreaseItem(p);
+						spawnFireworks(bee.getLocation());
+						plugin.sendDelayedMessages(plugin.congratsWaxed, 0);
+						plugin.addItem(p, item.waxedOxidizedCutCopperSlabItem());
+						plugin.amount++;
+					}
+					else {
+						plugin.sendDelayedMessages(plugin.nextWord, 0);
+						plugin.sendDelayedMessages(plugin.waxOxidizedCutCopperSlab, 60);
+					}
+				}
 			}
 		}
 	}
+
 	Random rand = new Random();
 	public void spawnFireworks(Location loc) {
 		FireworkEffect.Builder fwB = FireworkEffect.builder();

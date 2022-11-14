@@ -38,7 +38,13 @@ public class Main extends JavaPlugin{
 	String villageBuildMessage = eMark + ChatColor.GREEN+"Congrats you know how to spell Golden Village! We'll build you one as a reward...";
 	String kingVillagerName = "King Villager";
 	String goldenVillagerName = "Golden Villager";
-	
+	String zombifiedWardenMessage = ChatColor.DARK_PURPLE+"ZOMBIFIED WARDEN";
+	String wardenSpellMessage = eMark+ChatColor.GREEN+"Congrats on conqering the word Zombified Warden! Now you must defeat one...";
+	String zombifiedWardenName = "Zombified Warden";
+	String waxOxidizedCutCopperSlab = "WAX OXIDIZED CUT COPPER SLAB";
+	String congratsWaxed = eMark+ChatColor.GREEN+"Congrats on spelling Waxed Oxidized Cut Copper Slab! Place it down to complete the challenge...";
+	String spellingBeeDragon = "Spelling Bee Dragon";
+
 	boolean firstClicked = false;
 	int amount = 0;
 
@@ -46,7 +52,6 @@ public class Main extends JavaPlugin{
 	File MainDir = getDataFolder().toPath().toFile();
 	File SchemDir = getDataFolder().toPath().resolve("schems").toFile();
 	File[] schematics;
-
 
 	@Override
 	public void onEnable() { 
@@ -60,13 +65,24 @@ public class Main extends JavaPlugin{
 			}
 		});
 		getCommand("giveitem").setExecutor(new Commands(this));
+		getCommand("giveletters").setExecutor(new Commands(this));
+		getCommand("spawn").setExecutor(new Commands(this));
 		getServer().getPluginManager().registerEvents(new SpellingCraftingTable(this), this);
 		getServer().getPluginManager().registerEvents(new GettingLetters(this), this);
 		getServer().getPluginManager().registerEvents(new SmartBellPickaxe(this), this);
 		getServer().getPluginManager().registerEvents(new SpellingBee(this), this);
 		getServer().getPluginManager().registerEvents(new BedrockItem(this), this);
+		getServer().getPluginManager().registerEvents(new DiamondItem(this), this);
+		getServer().getPluginManager().registerEvents(new GoldenVillage(this), this);
+		getServer().getPluginManager().registerEvents(new WaxedItem(this), this);
+		getServer().getPluginManager().registerEvents(new ZombifiedWarden(this), this);
+		getServer().getPluginManager().registerEvents(new BeeDragon(this), this);
+
 		bellRecipe();diamondRecipe();bedrockRecipe();goldenRecipe();villageRecipe();
-		goldenVillageRecipe();
+		goldenVillageRecipe();zombifiedRecipe();wardenRecipe();zombifiedWardenRecipe();
+		waxedRecipe();oxidizedRecipe();cutRecipe();copperRecipe();cutRecipe();slabRecipe();
+		waxedOxidizeCutCapperSlabRecipe();
+
 	}
 	public boolean holdsType(Player p, Material mat) {
 		if(p.getInventory().getItemInMainHand()!=null) {
@@ -77,7 +93,7 @@ public class Main extends JavaPlugin{
 		return false;
 	}
 
-	NamespacedKey a,b,c,d,e,f,g,h;
+	NamespacedKey a,b,c,d,e,f,g,h,j,k,l,m,n,o,p,r,s,t;
 
 	public void bellRecipe() {
 		ItemStack result = new ItemStack(Material.BELL);
@@ -170,6 +186,59 @@ public class Main extends JavaPlugin{
 		recipe.setIngredient('E', usedItem6);
 		Bukkit.addRecipe(recipe);
 	}
+	public void zombifiedRecipe() {
+		ItemStack result = item.zombified();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.Z());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.O());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.M());
+		RecipeChoice usedItem4 = new RecipeChoice.ExactChoice(item.B());
+		RecipeChoice usedItem5 = new RecipeChoice.ExactChoice(item.I());
+		RecipeChoice usedItem6 = new RecipeChoice.ExactChoice(item.F());
+		RecipeChoice usedItem7 = new RecipeChoice.ExactChoice(item.E());
+		RecipeChoice usedItem8 = new RecipeChoice.ExactChoice(item.D());
+		this.f = new NamespacedKey(this, "f");
+		ShapedRecipe recipe = new ShapedRecipe(f, result);
+		recipe.shape("ZOM","BIF","IED");
+		recipe.setIngredient('Z', usedItem);
+		recipe.setIngredient('O', usedItem2);
+		recipe.setIngredient('M', usedItem3);
+		recipe.setIngredient('B', usedItem4);
+		recipe.setIngredient('I', usedItem5);
+		recipe.setIngredient('F', usedItem6);
+		recipe.setIngredient('E', usedItem7);
+		recipe.setIngredient('D', usedItem8);
+		Bukkit.addRecipe(recipe);
+	}
+	public void wardenRecipe() {
+		ItemStack result = item.warden();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.W());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.A());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.R());
+		RecipeChoice usedItem4 = new RecipeChoice.ExactChoice(item.D());
+		RecipeChoice usedItem5 = new RecipeChoice.ExactChoice(item.E());
+		RecipeChoice usedItem6 = new RecipeChoice.ExactChoice(item.N());
+		this.g = new NamespacedKey(this, "g");
+		ShapedRecipe recipe = new ShapedRecipe(g, result);
+		recipe.shape("WAR","DEN","   ");
+		recipe.setIngredient('W', usedItem);
+		recipe.setIngredient('A', usedItem2);
+		recipe.setIngredient('R', usedItem3);
+		recipe.setIngredient('D', usedItem4);
+		recipe.setIngredient('E', usedItem5);
+		recipe.setIngredient('N', usedItem6);
+		Bukkit.addRecipe(recipe);
+	}
+	public void zombifiedWardenRecipe() {
+		ItemStack result = item.zombifiedWarden();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.zombified());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.warden());
+		this.h = new NamespacedKey(this, "h");
+		ShapedRecipe recipe = new ShapedRecipe(h, result);
+		recipe.shape("ZW ","   ","   ");
+		recipe.setIngredient('Z', usedItem);
+		recipe.setIngredient('W', usedItem2);
+		Bukkit.addRecipe(recipe);
+	}
 	public void goldenVillageRecipe() {
 		ItemStack result = item.goldenVillage();
 		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.golden());
@@ -179,6 +248,108 @@ public class Main extends JavaPlugin{
 		recipe.shape("GV ","   ","   ");
 		recipe.setIngredient('G', usedItem);
 		recipe.setIngredient('V', usedItem2);
+		Bukkit.addRecipe(recipe);
+	}
+
+	public void waxedRecipe() {
+		ItemStack result = item.waxed();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.W());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.A());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.X());
+		RecipeChoice usedItem4 = new RecipeChoice.ExactChoice(item.E());
+		RecipeChoice usedItem5 = new RecipeChoice.ExactChoice(item.D());
+		this.j = new NamespacedKey(this, "j");
+		ShapedRecipe recipe = new ShapedRecipe(j, result);
+		recipe.shape("WAX","ED ","   ");
+		recipe.setIngredient('W', usedItem);
+		recipe.setIngredient('A', usedItem2);
+		recipe.setIngredient('X', usedItem3);
+		recipe.setIngredient('E', usedItem4);
+		recipe.setIngredient('D', usedItem5);
+		Bukkit.addRecipe(recipe);
+	}
+	public void oxidizedRecipe() {
+		ItemStack result = item.oxidized();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.O());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.X());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.I());
+		RecipeChoice usedItem4 = new RecipeChoice.ExactChoice(item.D());
+		RecipeChoice usedItem5 = new RecipeChoice.ExactChoice(item.Z());
+		RecipeChoice usedItem6 = new RecipeChoice.ExactChoice(item.E());
+		this.k = new NamespacedKey(this, "k");
+		ShapedRecipe recipe = new ShapedRecipe(k, result);
+		recipe.shape("OXI","DIZ","ED ");
+		recipe.setIngredient('O', usedItem);
+		recipe.setIngredient('X', usedItem2);
+		recipe.setIngredient('I', usedItem3);
+		recipe.setIngredient('D', usedItem4);
+		recipe.setIngredient('Z', usedItem5);
+		recipe.setIngredient('E', usedItem6);
+		Bukkit.addRecipe(recipe);
+	}
+	public void cutRecipe() {
+		ItemStack result = item.cut();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.C());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.U());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.T());
+		this.l = new NamespacedKey(this, "l");
+		ShapedRecipe recipe = new ShapedRecipe(l, result);
+		recipe.shape("CUT","   ","   ");
+		recipe.setIngredient('C', usedItem);
+		recipe.setIngredient('U', usedItem2);
+		recipe.setIngredient('T', usedItem3);
+		Bukkit.addRecipe(recipe);
+	}
+
+	public void copperRecipe() {
+		ItemStack result = item.copper();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.C());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.O());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.P());
+		RecipeChoice usedItem4 = new RecipeChoice.ExactChoice(item.E());
+		RecipeChoice usedItem5 = new RecipeChoice.ExactChoice(item.R());
+		this.m = new NamespacedKey(this, "m");
+		ShapedRecipe recipe = new ShapedRecipe(m, result);
+		recipe.shape("COP","PER","   ");
+		recipe.setIngredient('C', usedItem);
+		recipe.setIngredient('O', usedItem2);
+		recipe.setIngredient('P', usedItem3);
+		recipe.setIngredient('E', usedItem4);
+		recipe.setIngredient('R', usedItem5);
+		Bukkit.addRecipe(recipe);
+	}
+
+	public void slabRecipe() {
+		ItemStack result = item.slab();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.S());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.L());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.A());
+		RecipeChoice usedItem4 = new RecipeChoice.ExactChoice(item.B());
+		this.n = new NamespacedKey(this, "n");
+		ShapedRecipe recipe = new ShapedRecipe(n, result);
+		recipe.shape("SLA","B  ","   ");
+		recipe.setIngredient('S', usedItem);
+		recipe.setIngredient('L', usedItem2);
+		recipe.setIngredient('A', usedItem3);
+		recipe.setIngredient('B', usedItem4);
+		Bukkit.addRecipe(recipe);
+	}
+
+	public void waxedOxidizeCutCapperSlabRecipe() {
+		ItemStack result = item.waxedOxidizedCutCopperSlab();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.waxed());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.oxidized());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.cut());
+		RecipeChoice usedItem4 = new RecipeChoice.ExactChoice(item.copper());
+		RecipeChoice usedItem5 = new RecipeChoice.ExactChoice(item.slab());
+		this.o = new NamespacedKey(this, "o");
+		ShapedRecipe recipe = new ShapedRecipe(o, result);
+		recipe.shape("WOCR","S  ","   ");
+		recipe.setIngredient('W', usedItem);
+		recipe.setIngredient('O', usedItem2);
+		recipe.setIngredient('C', usedItem3);
+		recipe.setIngredient('R', usedItem4);
+		recipe.setIngredient('S', usedItem5);
 		Bukkit.addRecipe(recipe);
 	}
 	public void useAsTotem(Player p, ItemStack totemItem) {
@@ -228,7 +399,14 @@ public class Main extends JavaPlugin{
 		}
 		return null;
 	}
-
+	public ItemStack getLetterByString(String s) {
+		for(ItemStack letter : item.letters) {
+			if(letter.getItemMeta().getDisplayName().equals(s.toUpperCase())) {
+				return letter;
+			}
+		}
+		return null;
+	}
 	public LivingEntity getNearbyEntity(Location loc, int radius,Player p) {
 		for(Entity ent : loc.getWorld().getNearbyEntities(loc,radius,radius,radius)) {
 			if(ent instanceof LivingEntity) {
