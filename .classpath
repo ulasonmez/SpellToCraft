@@ -6,6 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/ulass/OneDrive/Masaüstü/PLUGINS/spigot-api-1.18-R0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ulass/OneDrive/Masaüstü/PLUGINS/spigot-api-1.19-R0.1-SNAPSHOT-shaded.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ulass/OneDrive/Masaüstü/PLUGINS/worldedit-bukkit-7.2.11-beta-01.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

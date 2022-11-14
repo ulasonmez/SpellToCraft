@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FilenameFilter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -31,19 +34,39 @@ public class Main extends JavaPlugin{
 	String nextWord = eMark+ChatColor.GREEN+"Your first word to spell is...";
 	String diamondMessage = eMark+ChatColor.AQUA+"DIAMOND";
 	String bedrockMessage = eMark+ChatColor.DARK_GRAY+"BEDROCK";
-
+	String goldenVillageMessage = eMark+ChatColor.YELLOW+"GOLDEN VILLAGE";
+	String villageBuildMessage = eMark + ChatColor.GREEN+"Congrats you know how to spell Golden Village! We'll build you one as a reward...";
+	String kingVillagerName = "King Villager";
+	String goldenVillagerName = "Golden Villager";
+	
 	boolean firstClicked = false;
 	int amount = 0;
 
+
+	File MainDir = getDataFolder().toPath().toFile();
+	File SchemDir = getDataFolder().toPath().resolve("schems").toFile();
+	File[] schematics;
+
+
 	@Override
-	public void onEnable() {
+	public void onEnable() { 
+		if (!this.MainDir.exists())
+			this.MainDir.mkdir(); 
+		if (!this.SchemDir.exists())
+			this.SchemDir.mkdir(); 
+		this.schematics = this.SchemDir.listFiles(new FilenameFilter() {
+			public boolean accept(File f, String name) {
+				return (name.endsWith(".schematic") || name.endsWith(".schem"));
+			}
+		});
 		getCommand("giveitem").setExecutor(new Commands(this));
 		getServer().getPluginManager().registerEvents(new SpellingCraftingTable(this), this);
 		getServer().getPluginManager().registerEvents(new GettingLetters(this), this);
 		getServer().getPluginManager().registerEvents(new SmartBellPickaxe(this), this);
 		getServer().getPluginManager().registerEvents(new SpellingBee(this), this);
-		getServer().getPluginManager().registerEvents(new BedrockItems(this), this);
-		bellRecipe();diamondRecipe();bedrockRecipe();
+		getServer().getPluginManager().registerEvents(new BedrockItem(this), this);
+		bellRecipe();diamondRecipe();bedrockRecipe();goldenRecipe();villageRecipe();
+		goldenVillageRecipe();
 	}
 	public boolean holdsType(Player p, Material mat) {
 		if(p.getInventory().getItemInMainHand()!=null) {
@@ -53,7 +76,6 @@ public class Main extends JavaPlugin{
 		}
 		return false;
 	}
-
 
 	NamespacedKey a,b,c,d,e,f,g,h;
 
@@ -108,6 +130,55 @@ public class Main extends JavaPlugin{
 		recipe.setIngredient('O', usedItem5);
 		recipe.setIngredient('C', usedItem6);
 		recipe.setIngredient('K', usedItem7);
+		Bukkit.addRecipe(recipe);
+	}
+	public void goldenRecipe() {
+		ItemStack result = item.golden();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.G());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.O());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.L());
+		RecipeChoice usedItem4 = new RecipeChoice.ExactChoice(item.D());
+		RecipeChoice usedItem5 = new RecipeChoice.ExactChoice(item.E());
+		RecipeChoice usedItem6 = new RecipeChoice.ExactChoice(item.N());
+		this.d = new NamespacedKey(this, "d");
+		ShapedRecipe recipe = new ShapedRecipe(d, result);
+		recipe.shape("GOL","DEN","   ");
+		recipe.setIngredient('G', usedItem);
+		recipe.setIngredient('O', usedItem2);
+		recipe.setIngredient('L', usedItem3);
+		recipe.setIngredient('D', usedItem4);
+		recipe.setIngredient('E', usedItem5);
+		recipe.setIngredient('N', usedItem6);
+		Bukkit.addRecipe(recipe);
+	}
+	public void villageRecipe() {
+		ItemStack result = item.village();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.V());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.I());
+		RecipeChoice usedItem3 = new RecipeChoice.ExactChoice(item.L());
+		RecipeChoice usedItem4 = new RecipeChoice.ExactChoice(item.A());
+		RecipeChoice usedItem5 = new RecipeChoice.ExactChoice(item.G());
+		RecipeChoice usedItem6 = new RecipeChoice.ExactChoice(item.E());
+		this.e = new NamespacedKey(this, "e");
+		ShapedRecipe recipe = new ShapedRecipe(e, result);
+		recipe.shape("VIL","LAG","E  ");
+		recipe.setIngredient('V', usedItem);
+		recipe.setIngredient('I', usedItem2);
+		recipe.setIngredient('L', usedItem3);
+		recipe.setIngredient('A', usedItem4);
+		recipe.setIngredient('G', usedItem5);
+		recipe.setIngredient('E', usedItem6);
+		Bukkit.addRecipe(recipe);
+	}
+	public void goldenVillageRecipe() {
+		ItemStack result = item.goldenVillage();
+		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.golden());
+		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.village());
+		this.f = new NamespacedKey(this, "f");
+		ShapedRecipe recipe = new ShapedRecipe(f, result);
+		recipe.shape("GV ","   ","   ");
+		recipe.setIngredient('G', usedItem);
+		recipe.setIngredient('V', usedItem2);
 		Bukkit.addRecipe(recipe);
 	}
 	public void useAsTotem(Player p, ItemStack totemItem) {

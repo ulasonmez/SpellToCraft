@@ -162,7 +162,6 @@ public class BedrockItem implements Listener{
 	Random rand = new Random();
 	@EventHandler
 	public void onClick(PlayerInteractAtEntityEvent event) {
-		Player p = event.getPlayer();
 		Entity ent = event.getRightClicked();
 		if(ent.getType().equals(EntityType.ARMOR_STAND)) {
 			ArmorStand stand = (ArmorStand)ent;

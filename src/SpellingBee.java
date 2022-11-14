@@ -7,14 +7,20 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Bee;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 
 public class SpellingBee implements Listener{
@@ -73,6 +79,45 @@ public class SpellingBee implements Listener{
 					else {
 						plugin.sendDelayedMessages(plugin.nextWord, 0);
 						plugin.sendDelayedMessages(plugin.bedrockMessage, 60);
+					}
+				}
+				else if(plugin.amount == 3) {
+					if(plugin.holdsItem(p, item.goldenVillage())) {
+						plugin.decreaseItem(p);
+						spawnFireworks(bee.getLocation());
+						Location loc = p.getLocation();
+						(new SchematicPaster()).pasteSchematics(plugin.schematics, loc, plugin, "GoldenVillage.schem");
+						Location loc2 = plugin.addToLoc(loc, 0, 0, 0);
+							
+						for(int i = 0; i<=20;i++) {
+							Villager v = (Villager)loc2.getWorld().spawnEntity(loc2, EntityType.VILLAGER);
+							
+						}
+						
+						Villager v = (Villager)loc2.getWorld().spawnEntity(loc2, EntityType.VILLAGER);
+						v.setCustomName(plugin.kingVillagerName);
+						BossBar bar = Bukkit.createBossBar(plugin.kingVillagerName,BarColor.YELLOW, BarStyle.SOLID, new org.bukkit.boss.BarFlag[0]);
+						bar.setVisible(true);
+						bar.addPlayer(p);
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								if(v.isDead()) {
+									for(Player p : Bukkit.getOnlinePlayers()) {
+										bar.removePlayer(p);
+									}
+									this.cancel();
+								}
+								bar.setProgress(v.getHealth() / v.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+							}
+						}.runTaskTimer(plugin, 0, 10);
+						
+						
+						plugin.amount++;
+					}
+					else {
+						plugin.sendDelayedMessages(plugin.nextWord, 0);
+						plugin.sendDelayedMessages(plugin.goldenVillageMessage, 60);
 					}
 				}
 			}

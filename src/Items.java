@@ -77,6 +77,32 @@ public class Items {
 		item.setItemMeta(meta);
 		return item;
 	}
+	
+
+	public ItemStack golden() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("GOLDEN");
+		meta.setCustomModelData(1);
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack village() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("VILLAGE");
+		meta.setCustomModelData(1);
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack goldenVillage() {
+		ItemStack item = new ItemStack(coal);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("GOLDEN VILLAGE");
+		meta.setCustomModelData(1);
+		item.setItemMeta(meta);
+		return item;
+	}
 	public ItemStack A() {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
