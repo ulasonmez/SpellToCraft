@@ -1,0 +1,7 @@
+main: Main
+name: SpellToCraft
+author: 'blume#0338'
+version: 1.0
+api-version: 1.18
+commands:
+  giveitem:
