@@ -8,6 +8,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class BeeDragon implements Listener{
@@ -24,8 +25,8 @@ public class BeeDragon implements Listener{
 			EnderDragon dragon = (EnderDragon)event.getEntity();
 			dragon.setCustomName(plugin.spellingBeeDragon);
 			dragon.setInvisible(true);
-			int startCmd = 1,endCmd=10;
-			ArmorStand stand = plugin.spawnArmorStand(dragon.getLocation(), item.spellingBeeDragon(startCmd));
+			int startCmd = 1,endCmd=8;
+			ArmorStand stand = spawnArmorStand(dragon.getLocation(), item.spellingBeeDragon(startCmd));
 			entityLocation.put(dragon, dragon.getLocation());
 			new BukkitRunnable() {
 				@Override
@@ -55,5 +56,14 @@ public class BeeDragon implements Listener{
 				}
 			}.runTaskTimer(plugin, 0, 3);
 		}
+	}
+	public ArmorStand spawnArmorStand(Location loc, ItemStack it) {
+		ArmorStand stand = (ArmorStand)loc.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
+		stand.setVisible(false);
+		stand.setGravity(false);
+		stand.setInvulnerable(true);
+		stand.setMarker(true);
+		stand.getEquipment().setHelmet(it);
+		return stand;
 	}
 }

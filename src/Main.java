@@ -80,7 +80,7 @@ public class Main extends JavaPlugin{
 
 		bellRecipe();diamondRecipe();bedrockRecipe();goldenRecipe();villageRecipe();
 		goldenVillageRecipe();zombifiedRecipe();wardenRecipe();zombifiedWardenRecipe();
-		waxedRecipe();oxidizedRecipe();cutRecipe();copperRecipe();cutRecipe();slabRecipe();
+		waxedRecipe();oxidizedRecipe();cutRecipe();copperRecipe();slabRecipe();
 		waxedOxidizeCutCapperSlabRecipe();
 
 	}
@@ -93,7 +93,7 @@ public class Main extends JavaPlugin{
 		return false;
 	}
 
-	NamespacedKey a,b,c,d,e,f,g,h,j,k,l,m,n,o,p,r,s,t;
+	NamespacedKey a,b,c,d,e,f,g,h,j,k,l,m,n,o,p,r,s,t,aa;
 
 	public void bellRecipe() {
 		ItemStack result = new ItemStack(Material.BELL);
@@ -243,8 +243,8 @@ public class Main extends JavaPlugin{
 		ItemStack result = item.goldenVillage();
 		RecipeChoice usedItem = new RecipeChoice.ExactChoice(item.golden());
 		RecipeChoice usedItem2 = new RecipeChoice.ExactChoice(item.village());
-		this.f = new NamespacedKey(this, "f");
-		ShapedRecipe recipe = new ShapedRecipe(f, result);
+		this.aa = new NamespacedKey(this, "aa");
+		ShapedRecipe recipe = new ShapedRecipe(aa, result);
 		recipe.shape("GV ","   ","   ");
 		recipe.setIngredient('G', usedItem);
 		recipe.setIngredient('V', usedItem2);
@@ -344,7 +344,7 @@ public class Main extends JavaPlugin{
 		RecipeChoice usedItem5 = new RecipeChoice.ExactChoice(item.slab());
 		this.o = new NamespacedKey(this, "o");
 		ShapedRecipe recipe = new ShapedRecipe(o, result);
-		recipe.shape("WOCR","S  ","   ");
+		recipe.shape("WOC","RS ","   ");
 		recipe.setIngredient('W', usedItem);
 		recipe.setIngredient('O', usedItem2);
 		recipe.setIngredient('C', usedItem3);

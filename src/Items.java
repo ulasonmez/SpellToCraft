@@ -9,13 +9,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class Items {
 
-	Material coal = Material.COAL;
+	Material coal = Material.NAUTILUS_SHELL;
 	List<ItemStack> allItems = List.of(spellingCraftingTable());
 	List<ItemStack> letters = List.of(A(),B(),C(),D(),E(),F(),G(),H(),I(),J(),K(),L(),M(),N(),O(),P(),Q(),R(),S(),T(),U(),V(),W(),X(),Y(),Z());
 
 	public ItemStack spellingCraftingTable() {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(31);
 		meta.setDisplayName("Spelling Crafting Table");
 		item.setItemMeta(meta);
 		return item;
@@ -41,6 +42,7 @@ public class Items {
 	public ItemStack smartBedrockChest() {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(28);
 		meta.setDisplayName("Smart Bedrock Chest");
 		List<String> lore = List.of(ChatColor.YELLOW+"Container holding illegal",ChatColor.YELLOW+"Bedrock items...",
 				ChatColor.DARK_BLUE+"Smart reward for knowing how to",ChatColor.DARK_BLUE+"spell");
@@ -51,6 +53,7 @@ public class Items {
 	public ItemStack smartBedrockChestOpen() {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(29);
 		meta.setDisplayName("Smart Bedrock Chest Open");
 		List<String> lore = List.of(ChatColor.YELLOW+"Container holding illegal",ChatColor.YELLOW+"Bedrock items...",
 				ChatColor.DARK_BLUE+"Smart reward for knowing how to",ChatColor.DARK_BLUE+"spell");
@@ -61,6 +64,7 @@ public class Items {
 	public ItemStack zombifiedWardenSerum() {
 		ItemStack item = new ItemStack(Material.APPLE);
 		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(2);
 		meta.setDisplayName("Zombified Warden Serum");
 		List<String> lore = List.of(ChatColor.YELLOW+"The Serum of a Zombified Warden can",
 				ChatColor.YELLOW+"grant powers strong enough to rip",
@@ -73,6 +77,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("WAXED OXIDIZED CUT COPPER SLAB");
+		meta.setCustomModelData(40);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -89,6 +94,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("WAXED");
+		meta.setCustomModelData(41);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -96,6 +102,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("OXIDIZED");
+		meta.setCustomModelData(36);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -103,12 +110,14 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("CUT");
+		meta.setCustomModelData(33);
 		item.setItemMeta(meta);
 		return item;
 	}
 	public ItemStack copper() {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(32);
 		meta.setDisplayName("COPPER");
 		item.setItemMeta(meta);
 		return item;
@@ -117,12 +126,14 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("SLAB");
+		meta.setCustomModelData(37);
 		item.setItemMeta(meta);
 		return item;
 	}
 	public ItemStack bedrockArmor() {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(27);
 		meta.setDisplayName("Bedrock Armor");
 		item.setItemMeta(meta);
 		return item;
@@ -130,6 +141,7 @@ public class Items {
 	public ItemStack bedrockMelonSlice() {
 		ItemStack item = new ItemStack(Material.APPLE);
 		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(1);
 		meta.setDisplayName("Bedrock Melon Slice");
 		item.setItemMeta(meta);
 		return item;
@@ -145,7 +157,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("Bell Waves");
-		meta.setCustomModelData(1);
+		meta.setCustomModelData(30);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -155,7 +167,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("GOLDEN");
-		meta.setCustomModelData(1);
+		meta.setCustomModelData(35);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -163,7 +175,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("VILLAGE");
-		meta.setCustomModelData(1);
+		meta.setCustomModelData(38);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -171,7 +183,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("GOLDEN VILLAGE");
-		meta.setCustomModelData(1);
+		meta.setCustomModelData(34);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -188,7 +200,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("ZOMBIFIED");
-		meta.setCustomModelData(1);
+		meta.setCustomModelData(43);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -196,7 +208,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("WARDEN");
-		meta.setCustomModelData(1);
+		meta.setCustomModelData(39);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -204,7 +216,7 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("ZOMBIFIED WARDEN");
-		meta.setCustomModelData(1);
+		meta.setCustomModelData(42);
 		item.setItemMeta(meta);
 		return item;
 	}
