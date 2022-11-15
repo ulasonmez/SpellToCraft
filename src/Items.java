@@ -1,8 +1,12 @@
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -10,7 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class Items {
 
 	Material coal = Material.NAUTILUS_SHELL;
-	List<ItemStack> allItems = List.of(spellingCraftingTable());
+	List<ItemStack> allItems = List.of(spellingCraftingTable(),smartBellPickaxe(),edibleDiamond(),smartBedrockChest(),
+			zombifiedWardenSerum(),waxedOxidizedCutCopperSlabItem());
 	List<ItemStack> letters = List.of(A(),B(),C(),D(),E(),F(),G(),H(),I(),J(),K(),L(),M(),N(),O(),P(),Q(),R(),S(),T(),U(),V(),W(),X(),Y(),Z());
 
 	public ItemStack spellingCraftingTable() {
@@ -33,6 +38,7 @@ public class Items {
 		ItemStack item = new ItemStack(Material.NETHERITE_PICKAXE);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("Smart Bell Pickaxe");
+		meta.setCustomModelData(1);
 		List<String> lore = List.of(ChatColor.YELLOW+"Uses sound waves to destroy",ChatColor.YELLOW+"blocks...",
 				ChatColor.DARK_BLUE+"Smart reward for knowing how to",ChatColor.DARK_BLUE+"spell");
 		meta.setLore(lore);
@@ -134,6 +140,8 @@ public class Items {
 		ItemStack item = new ItemStack(coal);
 		ItemMeta meta = item.getItemMeta();
 		meta.setCustomModelData(27);
+		AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 50, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+		meta.addAttributeModifier(Attribute.GENERIC_ARMOR, modifier);
 		meta.setDisplayName("Bedrock Armor");
 		item.setItemMeta(meta);
 		return item;
@@ -149,6 +157,7 @@ public class Items {
 	public ItemStack edibleDiamond() {
 		ItemStack item = new ItemStack(Material.APPLE);
 		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(3);
 		meta.setDisplayName("Edible Diamond");
 		item.setItemMeta(meta);
 		return item;

@@ -1,5 +1,6 @@
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EnderDragon;
@@ -18,50 +19,59 @@ public class BeeDragon implements Listener{
 		this.plugin=plugin;
 	}
 	Items item = new Items();
-	HashMap<Entity,Location> entityLocation = new HashMap<>();
 	@EventHandler
 	public void onSpawn(EntitySpawnEvent event) {
 		if(event.getEntity().getType().equals(EntityType.ENDER_DRAGON)) {
 			EnderDragon dragon = (EnderDragon)event.getEntity();
 			dragon.setCustomName(plugin.spellingBeeDragon);
 			dragon.setInvisible(true);
-			int startCmd = 1,endCmd=8;
-			ArmorStand stand = spawnArmorStand(dragon.getLocation(), item.spellingBeeDragon(startCmd));
-			entityLocation.put(dragon, dragon.getLocation());
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					if(dragon.isDead()) {
-						stand.remove();
-						this.cancel();
-					}
-					stand.teleport(dragon);
+		}
+	}
+	HashMap<Entity,Location> entityLocation = new HashMap<>();
+	public void spawnDragon(EnderDragon dragon) {
+		for(Entity ent : Bukkit.getWorlds().get(2).getEntities()) {
+			if(plugin.hasHelmet(ent, item.spellingBeeDragon(1))) {
+				ent.remove();
+			}
+		}
+		int startCmd = 1,endCmd=8;
+		ArmorStand stand = spawnArmorStand(dragon.getLocation(), item.spellingBeeDragon(startCmd));
+		entityLocation.clear();
+		entityLocation.put(dragon, dragon.getLocation());
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(dragon.isDead()) {
+					stand.remove();
+					this.cancel();
+				}
+				stand.teleport(dragon);
 
-					int cmd = stand.getEquipment().getHelmet().getItemMeta().getCustomModelData();
+				int cmd = stand.getEquipment().getHelmet().getItemMeta().getCustomModelData();
 
-					if(plugin.isClose(dragon.getLocation(), entityLocation.get(dragon), 0.1)) {
-						cmd = startCmd;
+				if(plugin.isClose(dragon.getLocation(), entityLocation.get(dragon), 0.1)) {
+					cmd = startCmd;
+				}
+				else {
+					if(cmd + 1 <= endCmd) {
+						cmd++;
 					}
 					else {
-						if(cmd + 1 <= endCmd) {
-							cmd++;
-						}
-						else {
-							cmd = startCmd;
-						}
-						entityLocation.remove(dragon);
-						entityLocation.put(dragon, dragon.getLocation());
+						cmd = startCmd;
 					}
-					stand.getEquipment().setHelmet(item.spellingBeeDragon(cmd));
+					entityLocation.remove(dragon);
+					entityLocation.put(dragon, dragon.getLocation());
 				}
-			}.runTaskTimer(plugin, 0, 3);
-		}
+				stand.getEquipment().setHelmet(item.spellingBeeDragon(cmd));
+			}
+		}.runTaskTimer(plugin, 0, 3);
 	}
 	public ArmorStand spawnArmorStand(Location loc, ItemStack it) {
 		ArmorStand stand = (ArmorStand)loc.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
 		stand.setVisible(false);
 		stand.setGravity(false);
 		stand.setInvulnerable(true);
+		stand.setRemoveWhenFarAway(false);
 		stand.setMarker(true);
 		stand.getEquipment().setHelmet(it);
 		return stand;

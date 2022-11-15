@@ -77,6 +77,7 @@ public class Main extends JavaPlugin{
 		getServer().getPluginManager().registerEvents(new WaxedItem(this), this);
 		getServer().getPluginManager().registerEvents(new ZombifiedWarden(this), this);
 		getServer().getPluginManager().registerEvents(new BeeDragon(this), this);
+		getServer().getPluginManager().registerEvents(new LastAdded(this), this);
 
 		bellRecipe();diamondRecipe();bedrockRecipe();goldenRecipe();villageRecipe();
 		goldenVillageRecipe();zombifiedRecipe();wardenRecipe();zombifiedWardenRecipe();

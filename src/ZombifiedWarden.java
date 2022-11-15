@@ -2,6 +2,9 @@ import java.util.ArrayList;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -10,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -49,6 +53,12 @@ public class ZombifiedWarden implements Listener{
 		}
 	}
 	@EventHandler
+	public void onDamage(EntityDamageEvent event) {
+		if(wardenPlayer.contains(event.getEntity())) {
+			event.setDamage(event.getDamage() / 5);
+		}
+	}
+	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
 		if(!wardenPlayer.contains(p))return;
@@ -56,11 +66,105 @@ public class ZombifiedWarden implements Listener{
 			if(event.getHand().equals(EquipmentSlot.HAND)) {
 				if(p.getInventory().getItemInMainHand()!=null) {
 					if(item.letters.contains(p.getInventory().getItemInMainHand())) {
+						plugin.decreaseItem(p);
 						shoot(p, p.getInventory().getItemInMainHand());
+					}
+					else {
+						plugin.decreaseItem(p);
+						if(p.getInventory().getItemInMainHand().getItemMeta()!=null) {
+							shootItemMetaItems(p, p.getInventory().getItemInMainHand());
+						}
+						else {
+							shootNormalItems(p, p.getInventory().getItemInMainHand());
+						}
 					}
 				}
 			}
 		}
+	}
+	public void shootItemMetaItems(Player p,ItemStack it) {
+		ArmorStand stand = plugin.spawnArmorStand(p.getLocation(), it);
+		new BukkitRunnable() {
+			Vector dir = p.getLocation().getDirection().normalize();
+			Location loc = p.getLocation();
+			double t = 1;
+			@Override
+			public void run() {
+				t+=1;
+				double a = dir.getX() * t;
+				double b = dir.getY() * t;
+				double c = dir.getZ() * t;
+				loc.add(a,b,c);
+				Location paperLoc = plugin.addToLoc(loc, 0, 1, 0);
+				stand.teleport(loc);
+				if(paperLoc.getBlock().getType().isSolid()) {
+					stand.remove();
+					for(int x = -3;x<=3;x++) {
+						for(int y = -3;y<=3;y++) {
+							for(int z = -3;z<=3;z++) {
+								Location loc2 = plugin.addToLoc(paperLoc, x, y, z);
+								if(loc2.distance(paperLoc)<=2) {
+									loc2.getWorld().dropItemNaturally(loc2, plugin.getLetters(loc2.getBlock().getType()));
+									loc2.getBlock().setType(Material.AIR);
+								}
+							}
+						}
+					}
+					if(it.getItemMeta().hasDisplayName()) {
+						for(String s : it.getItemMeta().getDisplayName().split("")) {
+							paperLoc.getWorld().dropItemNaturally(paperLoc, plugin.getLetterByString(s));
+						}
+					}
+					paperLoc.getWorld().playSound(paperLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
+					paperLoc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE,paperLoc,5);
+					this.cancel();
+				}
+				loc.subtract(a,b,c);
+			}
+		}.runTaskTimer(plugin, 0, 1);
+	}
+	public void shootNormalItems(Player p,ItemStack it) {
+		ArmorStand stand = plugin.spawnArmorStand(p.getLocation(), it);
+		new BukkitRunnable() {
+			Vector dir = p.getLocation().getDirection().normalize();
+			Location loc = p.getLocation();
+			double t = 1;
+			@Override
+			public void run() {
+				t+=1;
+				double a = dir.getX() * t;
+				double b = dir.getY() * t;
+				double c = dir.getZ() * t;
+				loc.add(a,b,c);
+				Location paperLoc = plugin.addToLoc(loc, 0, 1, 0);
+				stand.teleport(loc);
+				if(paperLoc.getBlock().getType().isSolid()) {
+					stand.remove();
+					for(int x = -3;x<=3;x++) {
+						for(int y = -3;y<=3;y++) {
+							for(int z = -3;z<=3;z++) {
+								Location loc2 = plugin.addToLoc(paperLoc, x, y, z);
+								if(loc2.distance(paperLoc)<=2) {
+									loc2.getWorld().dropItemNaturally(loc2, plugin.getLetters(loc2.getBlock().getType()));
+									loc2.getBlock().setType(Material.AIR);
+								}
+							}
+						}
+					}
+					if(it.hasItemMeta()) {
+						for(Enchantment enchant : it.getItemMeta().getEnchants().keySet()) {
+							for(String s : enchant.toString().split("")) {
+								paperLoc.getWorld().dropItemNaturally(paperLoc, plugin.getLetterByString(s));
+							}
+						}
+					}
+					paperLoc.getWorld().playSound(paperLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
+					paperLoc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE,paperLoc,5);
+					this.cancel();
+				}
+				loc.subtract(a,b,c);
+			}
+		}.runTaskTimer(plugin, 0, 1);
 	}
 	public void shoot(Player p,ItemStack it) {
 		ArmorStand stand = plugin.spawnArmorStand(p.getLocation(), it);
@@ -79,13 +183,27 @@ public class ZombifiedWarden implements Listener{
 				stand.teleport(loc);
 				if(paperLoc.getBlock().getType().isSolid()) {
 					stand.remove();
-					paperLoc.getWorld().createExplosion(paperLoc, 3);
+					for(int x = -3;x<=3;x++) {
+						for(int y = -3;y<=3;y++) {
+							for(int z = -3;z<=3;z++) {
+								Location loc2 = plugin.addToLoc(paperLoc, x, y, z);
+								if(loc2.distance(paperLoc)<=2) {
+									loc2.getWorld().dropItemNaturally(loc2, plugin.getLetters(loc2.getBlock().getType()));
+									loc2.getBlock().setType(Material.AIR);
+								}
+							}
+						}
+					}
+					paperLoc.getWorld().playSound(paperLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
+					paperLoc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE,paperLoc,5);
 					this.cancel();
 				}
 				LivingEntity lent = getNearbyEntity(paperLoc, 1);
 				if(lent!=null) {
 					stand.remove();
-					paperLoc.getWorld().createExplosion(paperLoc, 3);
+					paperLoc.getWorld().playSound(paperLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
+					paperLoc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE,paperLoc,5);
+					lent.damage(10);
 					this.cancel();
 				}
 				loc.subtract(a,b,c);

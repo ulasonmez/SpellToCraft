@@ -1,4 +1,6 @@
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -32,6 +34,7 @@ public class SmartBellPickaxe implements Listener{
 		}
 	}
 	public void shoot(Player p) {
+		p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_USE, 1, 1);
 		ArmorStand stand = plugin.spawnArmorStand(p.getLocation(), item.bellWaves());
 		new BukkitRunnable() {
 			Vector dir = p.getLocation().getDirection().normalize();
@@ -49,6 +52,7 @@ public class SmartBellPickaxe implements Listener{
 				if(paperLoc.getBlock().getType().isSolid()) {
 					stand.remove();
 					paperLoc.getWorld().dropItemNaturally(paperLoc, new ItemStack(plugin.getLetters(paperLoc.getBlock().getType())));
+					paperLoc.getBlock().setType(Material.AIR);
 					this.cancel();
 				}
 				LivingEntity lent = getNearbyEntity(paperLoc, 1);

@@ -3,6 +3,7 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -29,20 +30,7 @@ public class BedrockItem implements Listener{
 		this.plugin=plugin;
 	}
 	Items item = new Items();
-	
-	@EventHandler
-	public void onClick(PlayerInteractEvent event) {
-		Player p = event.getPlayer();
-		if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			if(event.getHand().equals(EquipmentSlot.HAND)) {
-				if(plugin.holdsItem(p, item.bedrockMelonSlice())) {
-					if(p.getFoodLevel()>=20) {
-						p.setFoodLevel(19);
-					}
-				}
-			}
-		}
-	}
+
 	public LivingEntity getNearbyEntity(Player p, Location loc) {
 		for(Entity ent : loc.getWorld().getNearbyEntities(loc,1,1,1)) {
 			if(!ent.equals(p) && !ent.getType().equals(EntityType.ARMOR_STAND)) {
@@ -130,6 +118,15 @@ public class BedrockItem implements Listener{
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
+		if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			if(event.getHand().equals(EquipmentSlot.HAND)) {
+				if(plugin.holdsItem(p, item.bedrockMelonSlice())) {
+					if(p.getFoodLevel()>=20) {
+						p.setFoodLevel(19);
+					}
+				}
+			}
+		}
 		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			if(event.getHand().equals(EquipmentSlot.HAND)) {
 				if(plugin.holdsItem(p, item.smartBedrockChest())) {
@@ -168,6 +165,7 @@ public class BedrockItem implements Listener{
 			if(plugin.hasHelmet(stand, item.smartBedrockChest())) {
 				event.setCancelled(true);
 				stand.getEquipment().setHelmet(item.smartBedrockChestOpen());
+				stand.getWorld().playSound(stand.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
 				new BukkitRunnable() {
 					int dropTime = 0;
 					@Override
