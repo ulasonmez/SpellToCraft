@@ -119,9 +119,7 @@ public class Commands implements CommandExecutor{
 					stand.remove();
 					this.cancel();
 				}
-				Location loc2 = dragon.getLocation().clone();
-				loc2.setYaw(loc2.getYaw()+180);
-				stand.teleport(loc2);
+				stand.teleport(dragon);
 
 				int cmd = stand.getEquipment().getHelmet().getItemMeta().getCustomModelData();
 

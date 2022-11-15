@@ -2,6 +2,7 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
@@ -22,14 +23,25 @@ public class BeeDragon implements Listener{
 	@EventHandler
 	public void onSpawn(EntitySpawnEvent event) {
 		if(event.getEntity().getType().equals(EntityType.ENDER_DRAGON)) {
-			event.setCancelled(true);
+			EnderDragon dragon = (EnderDragon)event.getEntity();
+			dragon.setHealth(0);
 			new BukkitRunnable() {
+				int counter = 0;
 				@Override
 				public void run() {
+					counter++;
 					for(int x = -20;x<=20;x++) {
-						for(int x = -20;x<=20;x++) {
-							
+						for(int y = -20;y<=20;y++) {
+							for(int z = -20;z<=20;z++) {
+								Location loc = plugin.addToLoc(Bukkit.getWorlds().get(2).getSpawnLocation(), x, y, z);
+								if(loc.getBlock().getType().equals(Material.END_PORTAL)) {
+									loc.getBlock().setType(Material.AIR);
+								}
+							}
 						}
+					}
+					if(counter >= 4 * 30) {
+						this.cancel();
 					}
 				}
 			}.runTaskTimer(plugin, 20*2,5);
