@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Locale;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,12 +27,12 @@ public class Main extends JavaPlugin{
 	String eMark = ChatColor.GREEN+"["+ChatColor.YELLOW+"!"+ChatColor.GREEN+"] ";
 	String spellingBeeChallenge = ChatColor.YELLOW+"Spelling Bee Challenge";
 	String dieMessage = ChatColor.RED+"DIE";
-	String spellingBeeMessage = eMark+ChatColor.GREEN+"Hello there! Welcome to the "+spellingBeeChallenge+"! You will have to spell to craft. If you fail to spell the word I give you, you "+dieMessage;
+	String spellingBeeMessage = eMark+ChatColor.GREEN+"Hello there! Welcome to the "+spellingBeeChallenge+ChatColor.GREEN+"! You will have to spell to craft. If you fail to spell the word I give you, you "+dieMessage;
 	String spellingBeeName = ChatColor.GREEN+"Spelling Bee";
 	String firstWord = eMark+ChatColor.GREEN+"Your first word to spell is...";
 	String bellMessage = ChatColor.YELLOW +"BELL";
 	String congratsMessage = eMark + ChatColor.GREEN+"Congrats you know how to spell B-E-L-L! Here's your reward...";
-	String nextWord = eMark+ChatColor.GREEN+"Your first word to spell is...";
+	String nextWord = eMark+ChatColor.GREEN+"Your next word to spell is...";
 	String diamondMessage = eMark+ChatColor.AQUA+"DIAMOND";
 	String bedrockMessage = eMark+ChatColor.DARK_GRAY+"BEDROCK";
 	String goldenVillageMessage = eMark+ChatColor.YELLOW+"GOLDEN VILLAGE";
@@ -41,7 +42,7 @@ public class Main extends JavaPlugin{
 	String zombifiedWardenMessage = ChatColor.DARK_PURPLE+"ZOMBIFIED WARDEN";
 	String wardenSpellMessage = eMark+ChatColor.GREEN+"Congrats on conqering the word Zombified Warden! Now you must defeat one...";
 	String zombifiedWardenName = "Zombified Warden";
-	String waxOxidizedCutCopperSlab = "WAX OXIDIZED CUT COPPER SLAB";
+	String waxOxidizedCutCopperSlab = ChatColor.DARK_AQUA + "WAX OXIDIZED CUT COPPER SLAB";
 	String congratsWaxed = eMark+ChatColor.GREEN+"Congrats on spelling Waxed Oxidized Cut Copper Slab! Place it down to complete the challenge...";
 	String spellingBeeDragon = "Spelling Bee Dragon";
 
@@ -67,6 +68,7 @@ public class Main extends JavaPlugin{
 		getCommand("giveitem").setExecutor(new Commands(this));
 		getCommand("giveletters").setExecutor(new Commands(this));
 		getCommand("spawn").setExecutor(new Commands(this));
+		getCommand("setnext").setExecutor(new Commands(this));
 		getServer().getPluginManager().registerEvents(new SpellingCraftingTable(this), this);
 		getServer().getPluginManager().registerEvents(new GettingLetters(this), this);
 		getServer().getPluginManager().registerEvents(new SmartBellPickaxe(this), this);
@@ -402,7 +404,7 @@ public class Main extends JavaPlugin{
 	}
 	public ItemStack getLetterByString(String s) {
 		for(ItemStack letter : item.letters) {
-			if(letter.getItemMeta().getDisplayName().equals(s.toUpperCase())) {
+			if(letter.getItemMeta().getDisplayName().equals(s.toUpperCase(Locale.ENGLISH))) {
 				return letter;
 			}
 		}
@@ -464,6 +466,7 @@ public class Main extends JavaPlugin{
 		stand.getEquipment().setHelmet(it);
 		return stand;
 	}
+
 	public ArmorStand placeBlockArmorStand(Location loc, ItemStack block) {
 		loc.setX((int)loc.getX());
 		loc.setZ((int)loc.getZ());

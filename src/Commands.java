@@ -7,10 +7,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Bee;
-import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wither;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -26,7 +26,33 @@ public class Commands implements CommandExecutor{
 	public boolean onCommand(CommandSender sender, Command arg1, String label, String[] args) {
 		if(sender instanceof Player) {
 			Player p = (Player)sender;
-			if(label.equalsIgnoreCase("giveitem")) {
+			if(label.equals("setnext")) {
+				if(args[0].equalsIgnoreCase("bell")) {
+					plugin.firstClicked = false;
+					plugin.amount = 0;
+				}
+				else if(args[0].equalsIgnoreCase("diamond")) {
+					plugin.firstClicked = true;
+					plugin.amount = 1;
+				}
+				else if(args[0].equalsIgnoreCase("bedrock")) {
+					plugin.firstClicked = true;
+					plugin.amount = 2;
+				}
+				else if(args[0].equalsIgnoreCase("goldenvillage")) {
+					plugin.firstClicked = true;
+					plugin.amount = 3;
+				}
+				else if(args[0].equalsIgnoreCase("zombifiedwarden")) {
+					plugin.firstClicked = true;
+					plugin.amount = 4;
+				}
+				else if(args[0].equalsIgnoreCase("waxedslab")) {
+					plugin.firstClicked = true;
+					plugin.amount = 5;
+				}
+			}
+			else if(label.equalsIgnoreCase("giveitem")) {
 				if(args.length == 1) {
 					if(args[0].equalsIgnoreCase("all")) {
 						for(ItemStack allItem : item.allItems) {
@@ -45,12 +71,22 @@ public class Commands implements CommandExecutor{
 						bee.setCustomName(plugin.spellingBeeName);
 					}
 					else if(args[0].equals("dragon")) {
-						for(Entity ent : Bukkit.getWorlds().get(2).getEntities()){
-							if(ent.getType().equals(EntityType.ENDER_DRAGON)) {
-								spawnDragon((EnderDragon)ent);
-								break;
+						Wither w = (Wither)Bukkit.getWorlds().get(2).spawnEntity(Bukkit.getWorlds().get(2).getSpawnLocation(), EntityType.WITHER);
+						w.setCustomName(plugin.spellingBeeDragon);w.setInvisible(true);
+						spawnDragon(w);
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								if(w.isDead()) {
+									this.cancel();
+								}
+								for(Player p : w.getWorld().getPlayers()) {
+									if(p!=null) {
+										w.setTarget(p);
+									}
+								}
 							}
-						}
+						}.runTaskTimer(plugin, 0, 5);
 					}
 				}
 			}
@@ -66,7 +102,7 @@ public class Commands implements CommandExecutor{
 		return false;
 	}
 	HashMap<Entity,Location> entityLocation = new HashMap<>();
-	public void spawnDragon(EnderDragon dragon) {
+	public void spawnDragon(Wither dragon) {
 		for(Entity ent : Bukkit.getWorlds().get(2).getEntities()) {
 			if(plugin.hasHelmet(ent, item.spellingBeeDragon(1))) {
 				ent.remove();
@@ -83,7 +119,9 @@ public class Commands implements CommandExecutor{
 					stand.remove();
 					this.cancel();
 				}
-				stand.teleport(dragon);
+				Location loc2 = dragon.getLocation().clone();
+				loc2.setYaw(loc2.getYaw()+180);
+				stand.teleport(loc2);
 
 				int cmd = stand.getEquipment().getHelmet().getItemMeta().getCustomModelData();
 

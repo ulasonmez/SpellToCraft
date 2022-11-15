@@ -70,11 +70,8 @@ public class ZombifiedWarden implements Listener{
 						shoot(p, p.getInventory().getItemInMainHand());
 					}
 					else {
-						plugin.decreaseItem(p);
-						if(p.getInventory().getItemInMainHand().getItemMeta()!=null) {
-							shootItemMetaItems(p, p.getInventory().getItemInMainHand());
-						}
-						else {
+						if(!hasCustomItem(p.getInventory().getItemInMainHand())) {
+							plugin.decreaseItem(p);
 							shootNormalItems(p, p.getInventory().getItemInMainHand());
 						}
 					}
@@ -82,46 +79,13 @@ public class ZombifiedWarden implements Listener{
 			}
 		}
 	}
-	public void shootItemMetaItems(Player p,ItemStack it) {
-		ArmorStand stand = plugin.spawnArmorStand(p.getLocation(), it);
-		new BukkitRunnable() {
-			Vector dir = p.getLocation().getDirection().normalize();
-			Location loc = p.getLocation();
-			double t = 1;
-			@Override
-			public void run() {
-				t+=1;
-				double a = dir.getX() * t;
-				double b = dir.getY() * t;
-				double c = dir.getZ() * t;
-				loc.add(a,b,c);
-				Location paperLoc = plugin.addToLoc(loc, 0, 1, 0);
-				stand.teleport(loc);
-				if(paperLoc.getBlock().getType().isSolid()) {
-					stand.remove();
-					for(int x = -3;x<=3;x++) {
-						for(int y = -3;y<=3;y++) {
-							for(int z = -3;z<=3;z++) {
-								Location loc2 = plugin.addToLoc(paperLoc, x, y, z);
-								if(loc2.distance(paperLoc)<=2) {
-									loc2.getWorld().dropItemNaturally(loc2, plugin.getLetters(loc2.getBlock().getType()));
-									loc2.getBlock().setType(Material.AIR);
-								}
-							}
-						}
-					}
-					if(it.getItemMeta().hasDisplayName()) {
-						for(String s : it.getItemMeta().getDisplayName().split("")) {
-							paperLoc.getWorld().dropItemNaturally(paperLoc, plugin.getLetterByString(s));
-						}
-					}
-					paperLoc.getWorld().playSound(paperLoc, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
-					paperLoc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE,paperLoc,5);
-					this.cancel();
-				}
-				loc.subtract(a,b,c);
+	public boolean hasCustomItem(ItemStack it) {
+		for(ItemStack allIt : item.allItems) {
+			if(plugin.isSame(it, allIt)) {
+				return true;
 			}
-		}.runTaskTimer(plugin, 0, 1);
+		}
+		return false;
 	}
 	public void shootNormalItems(Player p,ItemStack it) {
 		ArmorStand stand = plugin.spawnArmorStand(p.getLocation(), it);
@@ -150,6 +114,9 @@ public class ZombifiedWarden implements Listener{
 								}
 							}
 						}
+					}
+					for(String letter : it.getType().toString().split("")) {
+						paperLoc.getWorld().dropItemNaturally(paperLoc, plugin.getLetterByString(letter));
 					}
 					if(it.hasItemMeta()) {
 						for(Enchantment enchant : it.getItemMeta().getEnchants().keySet()) {

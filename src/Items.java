@@ -15,7 +15,7 @@ public class Items {
 
 	Material coal = Material.NAUTILUS_SHELL;
 	List<ItemStack> allItems = List.of(spellingCraftingTable(),smartBellPickaxe(),edibleDiamond(),smartBedrockChest(),
-			zombifiedWardenSerum(),waxedOxidizedCutCopperSlabItem());
+			zombifiedWardenSerum(),waxedOxidizedCutCopperSlabItem(),goldenVillage(),goldenCoin(),zombifiedWarden(),waxedOxidizedCutCopperSlab());
 	List<ItemStack> letters = List.of(A(),B(),C(),D(),E(),F(),G(),H(),I(),J(),K(),L(),M(),N(),O(),P(),Q(),R(),S(),T(),U(),V(),W(),X(),Y(),Z());
 
 	public ItemStack spellingCraftingTable() {

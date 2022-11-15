@@ -20,6 +20,7 @@ import org.bukkit.entity.Warden;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -34,6 +35,7 @@ public class SpellingBee implements Listener{
 	@EventHandler
 	public void onClick(PlayerInteractAtEntityEvent event) {
 		Player p = event.getPlayer();
+		if(!event.getHand().equals(EquipmentSlot.HAND))return;
 		if(event.getRightClicked().getType().equals(EntityType.BEE)) {
 			if(event.getRightClicked().getCustomName()!=null && event.getRightClicked().getCustomName().equals(plugin.spellingBeeName)) {
 				Bee bee = (Bee)event.getRightClicked();
@@ -88,13 +90,13 @@ public class SpellingBee implements Listener{
 						spawnFireworks(bee.getLocation());
 						Location loc = p.getLocation();
 						(new SchematicPaster()).pasteSchematics(plugin.schematics, loc, plugin, "GoldenVillage.schem");
-						Location loc2 = plugin.addToLoc(loc, 0, 0, 0);
-							
+						Location loc2 = plugin.addToLoc(loc, 3, 7, -21);
+
 						for(int i = 0; i<=20;i++) {
 							Villager v = (Villager)loc2.getWorld().spawnEntity(plugin.addToLoc(loc, rand.nextInt(40)-20, 20, rand.nextInt(40)-20), EntityType.VILLAGER);
 							v.setCustomName(plugin.goldenVillagerName);
 						}
-						
+
 						Villager v = (Villager)loc2.getWorld().spawnEntity(loc2, EntityType.VILLAGER);
 						v.setCustomName(plugin.kingVillagerName);
 						BossBar bar = Bukkit.createBossBar(plugin.kingVillagerName,BarColor.YELLOW, BarStyle.SOLID, new org.bukkit.boss.BarFlag[0]);
@@ -112,8 +114,8 @@ public class SpellingBee implements Listener{
 								bar.setProgress(v.getHealth() / v.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
 							}
 						}.runTaskTimer(plugin, 0, 10);
-						
-						
+
+
 						plugin.amount++;
 					}
 					else {
@@ -126,10 +128,10 @@ public class SpellingBee implements Listener{
 						plugin.decreaseItem(p);
 						spawnFireworks(bee.getLocation());
 						Bukkit.broadcastMessage(plugin.wardenSpellMessage);
-						
+
 						Warden warden = (Warden)bee.getWorld().spawnEntity(bee.getLocation(), EntityType.WARDEN);
-						warden.setCustomName(plugin.zombifiedWardenName);
-						
+						warden.setCustomName(plugin.zombifiedWardenName);plugin.setMaxHealth(warden, 60, true);
+
 						new BukkitRunnable() {
 							@Override
 							public void run() {
@@ -139,7 +141,7 @@ public class SpellingBee implements Listener{
 								warden.setTarget(p);
 							}
 						}.runTaskTimer(plugin, 0, 5);
-						
+
 						plugin.amount++;
 					}
 					else {
@@ -168,12 +170,12 @@ public class SpellingBee implements Listener{
 	Random rand = new Random();
 	public void spawnFireworks(Location loc) {
 		FireworkEffect.Builder fwB = FireworkEffect.builder();
-        fwB.flicker(rand.nextBoolean());
-        fwB.trail(rand.nextBoolean());
-        fwB.with(FireworkEffect.Type.BALL);
-        fwB.withColor(Color.fromRGB(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
-        fwB.withFade(Color.fromRGB(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
-        FireworkEffect fe = fwB.build();
+		fwB.flicker(rand.nextBoolean());
+		fwB.trail(rand.nextBoolean());
+		fwB.with(FireworkEffect.Type.BALL);
+		fwB.withColor(Color.fromRGB(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+		fwB.withFade(Color.fromRGB(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+		FireworkEffect fe = fwB.build();
 		Firework f = (Firework) loc.getWorld().spawn(loc, Firework.class);
 		FireworkMeta fm = f.getFireworkMeta();
 		fm.addEffect(fe);

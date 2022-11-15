@@ -108,7 +108,10 @@ public class BedrockItem implements Listener{
 					for(Entity ent : p.getNearbyEntities(5, 3, 5)) {
 						if(ent.getType()!=EntityType.ARMOR_STAND) {
 							Vector dir = (ent.getLocation().toVector()).clone().subtract((p.getLocation().toVector())).normalize();
-							ent.setVelocity(dir);
+							try {
+								ent.setVelocity(dir);
+							} catch (Exception e) {
+							}
 						}
 					}
 				}
@@ -190,6 +193,8 @@ public class BedrockItem implements Listener{
 						Item it = (Item)stand.getWorld().dropItem(stand.getLocation(), dropStack);
 						it.setVelocity(new Vector(0,1,0));
 						if(dropTime >= 4*15) {
+							stand.getWorld().playSound(stand.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
+							stand.getEquipment().setHelmet(item.smartBedrockChest());
 							this.cancel();
 						}
 					}

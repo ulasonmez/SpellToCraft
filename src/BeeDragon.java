@@ -22,9 +22,17 @@ public class BeeDragon implements Listener{
 	@EventHandler
 	public void onSpawn(EntitySpawnEvent event) {
 		if(event.getEntity().getType().equals(EntityType.ENDER_DRAGON)) {
-			EnderDragon dragon = (EnderDragon)event.getEntity();
-			dragon.setCustomName(plugin.spellingBeeDragon);
-			dragon.setInvisible(true);
+			event.setCancelled(true);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					for(int x = -20;x<=20;x++) {
+						for(int x = -20;x<=20;x++) {
+							
+						}
+					}
+				}
+			}.runTaskTimer(plugin, 20*2,5);
 		}
 	}
 	HashMap<Entity,Location> entityLocation = new HashMap<>();

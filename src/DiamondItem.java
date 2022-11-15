@@ -88,6 +88,7 @@ public class DiamondItem implements Listener{
 			if(diamondPlayers.contains(p)) {
 				diamondPlayers.remove(p);
 			}
+			diamondPlayers.add(p);
 			new BukkitRunnable() {
 				@Override
 				public void run() {

@@ -2,13 +2,15 @@ import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.DragonFireball;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -28,7 +30,6 @@ public class LastAdded implements Listener{
 				for(ItemStack drops : event.getDrops()) {
 					drops.setType(Material.AIR);
 				}
-				stand.getWorld().dropItemNaturally(stand.getLocation(), item.spellingCraftingTable());
 			}
 		}
 		else if(event.getEntity().getType().equals(EntityType.MINECART)) {
@@ -40,15 +41,26 @@ public class LastAdded implements Listener{
 	}
 	@EventHandler
 	public void onBreak(PlayerInteractEvent event) {
-		if(event.getClickedBlock().getType().equals(Material.WAXED_OXIDIZED_CUT_COPPER)) {
-			event.getClickedBlock().setType(Material.AIR);
+		if(event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+			if(event.getClickedBlock().getType().equals(Material.WAXED_OXIDIZED_CUT_COPPER)) {
+				event.getClickedBlock().setType(Material.AIR);
+			}
+		}
+		if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			if(event.getHand().equals(EquipmentSlot.HAND)) {
+				if(plugin.holdsItem(event.getPlayer(), item.zombifiedWardenSerum())) {
+					if(event.getPlayer().getFoodLevel() >= 20) {
+						event.getPlayer().setFoodLevel(19);
+					}
+				}
+			}
 		}
 	}
 	Random rand = new Random();
 	@EventHandler
 	public void onSpawn(EntitySpawnEvent event) {
-		if(event.getEntity().getType().equals(EntityType.DRAGON_FIREBALL)) {
-			DragonFireball df = (DragonFireball)event.getEntity();
+		if(event.getEntity().getType().equals(EntityType.WITHER_SKULL)) {
+			WitherSkull df = (WitherSkull)event.getEntity();
 			new BukkitRunnable() {
 				ArmorStand stand = plugin.spawnArmorStand(df.getLocation(), item.letters.get(rand.nextInt(item.letters.size())));
 				@Override

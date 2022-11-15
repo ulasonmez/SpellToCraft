@@ -27,7 +27,9 @@ public class WaxedItem implements Listener{
 						for(int y = -radius;y<=radius;y++) {
 							for(int z = -radius;z<=radius;z++) {
 								Location loc2 = plugin.addToLoc(loc, x, y, z);
-								loc2.getBlock().setType(Material.WAXED_OXIDIZED_CUT_COPPER);
+								if(loc2.getBlock().getType().isSolid()) {
+									loc2.getBlock().setType(Material.WAXED_OXIDIZED_CUT_COPPER);
+								}
 							}
 						}
 					}
